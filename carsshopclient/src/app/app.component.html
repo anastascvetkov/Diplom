@@ -1,0 +1,248 @@
+<div class="container" id="main-container">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" routerLink="/" style="color:white;">CarsShopBG</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+      aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" (click)="onOpenModal('filterCars')">| Filter Cars<span
+              class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active navigationLi" [hidden]="!isLoggedIn">
+          <a class="nav-link" routerLink="/myInfo">| My Account<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active" [hidden]="!isLoggedIn">
+          <a class="nav-link" (click)="onOpenModal('addProduct')">| Add Car<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active" [hidden]="isLoggedIn">
+          <a class="nav-link" (click)="onOpenModal('showLogin')">| Login<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active" [hidden]="isLoggedIn">
+          <a class="nav-link" (click)="onOpenModal('register')">| Register<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active" [hidden]="!isLoggedIn">
+          <a class="nav-link" (click)="logout()">| Logout<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <router-outlet></router-outlet>
+
+
+
+
+
+  <!-- Add car modal -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">ADD CAR FOR SALE</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddProduct(addForm)">
+            <div class="form-group">
+              <label for="name">Brand</label>
+              <input type="text" ngModel name="brand" class="form-control" id="brand" placeholder="brand" min="1"
+                max="20" required>
+                <span class="validity"></span>
+            </div>
+            <div class="form-group">
+              <label for="model">Model</label>
+              <input type="text" ngModel name="model" class="form-control" id="model" placeholder="model" min="1"
+                max="20" required>
+                <span class="validity"></span>
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input ngModel name="price" type="number" class="form-control" id="price" placeholder="Price" value="1"
+                min="1" required>
+                <span class="validity"></span>
+            </div>
+            <div class="form-group">
+              <label for="power">Power</label>
+              <input ngModel name="power" type="number" class="form-control" id="power" placeholder="power" value="1"
+                min="1" max="1500" required>
+                <span class="validity"></span>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input type="text" ngModel name="description" class="form-control" id="description" minlength="1"
+                maxlength="100" placeholder="description" required>
+                <span class="validity"></span>
+            </div>
+            <div class="from-group">
+              <label for="shape-select">Shape</label>
+              <select class="custom-select" ngModel name="shape" id="shape-select" required>
+                <option value="SUV">SUV</option>
+                <option value="CABRIOLET">CABRIOLET</option>
+                <option value="WAGON">WAGON</option>
+                <option value="VAN">VAN</option>
+                <option value="SPORT_CAR">SPORT_CAR</option>
+                <option value="SEDAN">SEDAN</option>
+                <option value="HATCHBACK">HATCHBACK</option>
+              </select>
+              <span class="validity"></span>
+            </div>
+            <div class="from-group">
+              <label for="fuel-select">Fuel</label>
+              <select class="custom-select" ngModel name="fuel" id="fuel-select" required>
+                <option value="DIESEL">DIESEL</option>
+                <option value="PETROL">PETROL</option>
+                <option value="ELECTRIC">ELECTRIC</option>
+                <option value="LPG">LPG</option>
+                <option value="MPG">MPG</option>
+                <option value="HYBRID">HYBRID</option>
+              </select>
+              <span class="validity"></span>
+            </div>
+            <div class="from-group">
+              <label for="transmission-select">Transmission</label>
+              <select class="custom-select" ngModel name="transmission" id="transmission-select" required>
+                <option value="AUTOMATIC">AUTOMATIC</option>
+                <option value="MANUAL">MANUAL</option>
+              </select>
+              <span class="validity"></span>
+            </div>
+            <div class="from-group">
+              <label for="status-select">Product Status</label>
+              <select class="custom-select" ngModel name="status" id="status-select" required>
+                <option value="AVAILABLE">Available</option>
+                <option value="SOLD">Sold</option>
+              </select>
+              <span class="validity"></span>
+            </div>
+            <div class="form-group">
+              <label for="yearOfCreation">Year Of Creation</label>
+              <input ngModel  name="yearOfCreation" type="number" class="form-control" id="yearOfCreation" placeholder="Year of Creation"
+                min="1950" max="2023" required>
+              <span class="validity"></span>
+            </div>
+            <div class="form-group">
+              <label for="yearOfCreation">Images</label>
+              <input (change)="uploadIimages($event)" ngModel multiple accept="image/*" type="file" name="images"  id="selectImage" class="file-input" value="Select Image" required>
+            </div>
+            
+
+            <div class="modal-footer">
+              <button type="button" id="add-product-form-close" class="btn btn-secondary"
+                data-dismiss="modal">Close</button>
+              <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myProductsModalLabel"
+    aria-hidden="true">
+    <app-register></app-register>
+  </div>
+
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+    aria-hidden="true">
+    <login></login>
+  </div>
+
+
+  <footer class="footer_area section_padding_130_0">
+    <div class="container">
+      <div class="row">
+        <!-- Single Widget-->
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="single-footer-widget section_padding_0_130">
+            <!-- Footer Logo-->
+            <div class="footer-logo mb-3"></div>
+            <h3>A person do not find his car, the cars do it!.</h3>
+            <!-- Copywrite Text-->
+            <div class="copywrite-text mb-5">
+              <p class="mb-0">Best plase to connect with your feature car.</p>
+            </div>
+            <!-- Footer Social Area-->
+            <div class="footer_social_area">
+              <a href="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+                <i class="fa fa-facebook" style="color: aqua;"></i>
+              </a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram">
+                <i class="fa fa-instagram" style="color: aqua;"></i>
+              </a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype">
+                <i class="fa fa-skype" style="color: aqua;"></i>
+              </a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+                <i class="fa fa-twitter" style="color: aqua;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Single Widget-->
+        <div class="col-12 col-sm-6 col-lg">
+          <div class="single-footer-widget section_padding_0_130">
+            <!-- Widget Title-->
+            <h5 class="widget-title">About Cars</h5>
+            <!-- Footer Menu-->
+            <div class="footer_menu">
+              <ul>
+                <li class="">
+                  <a (click)="onOpenModal('filterCars')">Filter Cars</a>
+                </li>
+                <li [hidden]="!isLoggedIn">
+                  <a (click)="onOpenModal('addProduct')">Add Car<span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Single Widget-->
+        <div class="col-12 col-sm-6 col-lg">
+          <div class="single-footer-widget section_padding_0_130">
+            <!-- Widget Title-->
+            <h5 class="widget-title">About User</h5>
+            <!-- Footer Menu-->
+            <div class="footer_menu">
+              <ul>
+                <li  [hidden]="!isLoggedIn">
+                  <a  routerLink="/myInfo">My Account</a>
+                </li>
+                <li  [hidden]="!isLoggedIn">
+              
+                <li  [hidden]="isLoggedIn">
+                  <a (click)="onOpenModal('showLogin')">Login</a>
+                </li>
+                <li  [hidden]="isLoggedIn">
+                  <a  (click)="onOpenModal('register')">Register</a>
+                </li>
+                <li  [hidden]="!isLoggedIn">
+                  <a (click)="logout()">Logout</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Single Widget-->
+        <div class="col-12 col-sm-6 col-lg">
+          <div class="single-footer-widget section_padding_0_130">
+            <!-- Widget Title-->
+            <h5 class="widget-title">Contact</h5>
+            <!-- Footer Menu-->
+            <div class="footer_menu">
+              <ul>
+                <li>Email Us on: <a href="#">cars_shop_BG@gmail.com</a></li>
+                <li><a href="#">Help Center</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
